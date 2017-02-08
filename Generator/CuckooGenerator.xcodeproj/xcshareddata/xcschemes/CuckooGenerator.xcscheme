@@ -145,6 +145,12 @@
             ReferencedContainer = "container:CuckooGenerator.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "generate --output /Users/ygorbarboza/development/workspace_ios/iphone-app/app/appTests/GeneratedMocks.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/Wrapper/UNUserNotificationCenterWrapper.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/Handlers/PushHandlerFactory.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/PushAnalytics.swift"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

@@ -15,6 +15,7 @@ public struct ClassDeclaration: ContainerToken {
     public let initializers: [Initializer]
     public let children: [Token]
     public let implementation: Bool = true
+    public let attributes: [String]
     
     public var hasNoArgInit: Bool {
         return initializers.filter { $0.parameters.isEmpty }.isEmpty

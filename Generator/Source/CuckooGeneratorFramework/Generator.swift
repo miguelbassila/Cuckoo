@@ -39,6 +39,9 @@ public struct Generator {
         guard token.accessibility.isAccessible else { return }
         
         code += ""
+        if (token is ClassDeclaration && (token as! ClassDeclaration).attributes.contains("source.decl.attribute.available")) {
+            code +=  "@available(iOS 10.0, *)"
+        }
         code += "\(token.accessibility.sourceName)class \(mockClassName(of: token.name)): \(token.name), Cuckoo.Mock {"
         code.nest {
             code += "\(token.accessibility.sourceName)typealias MocksType = \(token.name)"
@@ -129,6 +132,9 @@ public struct Generator {
         
         let accessibility = minAccessibility(token.accessibility, outerAccessibility)
         code += ""
+        if (token is ClassMethod && (token as! ClassMethod).attributes.contains("source.decl.attribute.available")) {
+            code +=  "@available(iOS 10.0, *)"
+        }
         code += "\(accessibility.sourceName)\(override)\(token.isInit ? "" : "func " )\(token.rawName)(\(parametersSignature))\(token.returnSignature) {"
         code.nest("return \(managerCall)")
         code += "}"

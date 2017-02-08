@@ -43,6 +43,17 @@ public struct Tokenizer {
         let nameRange = extractRange(from: dictionary, offset: .NameOffset, length: .NameLength)
         let bodyRange = extractRange(from: dictionary, offset: .BodyOffset, length: .BodyLength)
         
+    
+        let attributes = dictionary[Key.Attributes.rawValue] as? [SourceKitRepresentable] ?? []
+        
+        let parsedAttributes: [String] = attributes.flatMap {
+            guard let attribute = $0 as? [String: SourceKitRepresentable] else { return nil }
+            
+            guard let value = attribute[Key.Attribute.rawValue] as? String else { return nil }
+            
+            return value
+            }.flatMap { $0 }
+        
         let accessibility = (dictionary[Key.Accessibility.rawValue] as? String).flatMap { Accessibility(rawValue: $0) }
         let type = dictionary[Key.TypeName.rawValue] as? String
         
@@ -80,7 +91,8 @@ public struct Tokenizer {
                 nameRange: nameRange!,
                 bodyRange: bodyRange!,
                 initializers: initializers,
-                children: children)
+                children: children,
+                attributes: parsedAttributes)
             
         case Kinds.ExtensionDeclaration.rawValue:
             return ExtensionDeclaration(range: range!)
@@ -135,6 +147,7 @@ public struct Tokenizer {
                     range: range!,
                     nameRange: nameRange!,
                     parameters: parameters,
+                    attributes: parsedAttributes,
                     bodyRange: bodyRange)
             } else {
                 return ProtocolMethod(
