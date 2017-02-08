@@ -288,6 +288,9 @@ public struct Generator {
         guard token.accessibility.isAccessible else { return }
         
         code += ""
+        if (token is ClassDeclaration && (token as! ClassDeclaration).attributes.contains("source.decl.attribute.available")) {
+            code +=  "@available(iOS 10.0, *)"
+        }
         code += "\(token.accessibility.sourceName)class \(stubClassName(of: token.name)): \(token.name) {"
         code.nest {
             token.children.forEach { generateNoImplStub(for: $0, withOuterAccessibility: token.accessibility) }
