@@ -132,9 +132,7 @@ public struct Generator {
         
         let accessibility = minAccessibility(token.accessibility, outerAccessibility)
         code += ""
-        if (token is ClassMethod && (token as! ClassMethod).attributes.contains("source.decl.attribute.available")) {
-            code +=  "@available(iOS 10.0, *)"
-        }
+        addAvaliableIfNeeded(token)
         code += "\(accessibility.sourceName)\(override)\(token.isInit ? "" : "func " )\(token.rawName)(\(parametersSignature))\(token.returnSignature) {"
         code.nest("return \(managerCall)")
         code += "}"
@@ -207,6 +205,7 @@ public struct Generator {
         returnType += ">"
         
         code += ""
+        addAvaliableIfNeeded(token)
         code += ("\(token.accessibility.sourceName)func \(token.rawName)\(matchableGenerics(with: token.parameters))" +
             "(\(matchableParameterSignature(with: token.parameters))) -> \(returnType)\(matchableGenerics(where: token.parameters)) {")
         let matchers: String
@@ -271,6 +270,7 @@ public struct Generator {
         
         code += ""
         code += "@discardableResult"
+        addAvaliableIfNeeded(token)
         code += ("\(token.accessibility.sourceName)func \(token.rawName)\(matchableGenerics(with: token.parameters))" +
             "(\(matchableParameterSignature(with: token.parameters))) -> Cuckoo.__DoNotUse<\(genericSafeType(from: token.returnType))>\(matchableGenerics(where: token.parameters)) {")
         let matchers: String
@@ -336,9 +336,16 @@ public struct Generator {
         
         let accessibility = minAccessibility(token.accessibility, outerAccessibility)
         code += ""
+        addAvaliableIfNeeded(token)
         code += "\(accessibility.sourceName)\(override)func \(token.rawName)(\(parametersSignature))\(token.returnSignature) {"
         code.nest("return DefaultValueRegistry.defaultValue(for: (\(token.returnType)).self)")
         code += "}"
+    }
+    
+    private func addAvaliableIfNeeded(_ token: Method){
+        if (token is ClassMethod && (token as! ClassMethod).attributes.contains("source.decl.attribute.available")) {
+            code +=  "@available(iOS 10.0, *)"
+        }
     }
     
     private func mockClassName(of originalName: String) -> String {
