@@ -15,4 +15,6 @@ public struct ProtocolDeclaration: ContainerToken {
     public let initializers: [Initializer]
     public let children: [Token]
     public let implementation: Bool = false
+    public let attributes: [String]
 }
+

@@ -147,7 +147,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "generate --testable &quot;app,commonswift&quot; --output /Users/ygorbarboza/development/workspace_ios/iphone-app/app/appTests/GeneratedMocks.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/Handlers/TransactionPushHandler.swift"
+            argument = "generate --testable &quot;app,commonswift&quot; --output /Users/ygorbarboza/development/workspace_ios/iphone-app/app/appTests/GeneratedMocks.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/Wrapper/UNUserNotificationCenterWrapper.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/Handlers/PushHandlerFactory.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/PushAnalytics.swift /Users/ygorbarboza/development/workspace_ios/iphone-app/app/app/Screens/Push/Protocols/PushHandler.swift"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

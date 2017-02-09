@@ -13,6 +13,7 @@ public protocol Method: Token {
     var range: CountableRange<Int> { get }
     var nameRange: CountableRange<Int> { get }
     var parameters: [MethodParameter] { get }
+    var attributes: [String] { get }
 }
 
 public extension Method {

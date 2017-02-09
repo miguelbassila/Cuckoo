@@ -12,5 +12,6 @@ public struct ProtocolMethod: Method {
     public let returnSignature: String
     public let range: CountableRange<Int>
     public let nameRange: CountableRange<Int>
+    public let attributes: [String]
     public let parameters: [MethodParameter]
 }

@@ -39,9 +39,7 @@ public struct Generator {
         guard token.accessibility.isAccessible else { return }
         
         code += ""
-        if (token is ClassDeclaration && (token as! ClassDeclaration).attributes.contains("source.decl.attribute.available")) {
-            code +=  "@available(iOS 10.0, *)"
-        }
+        addAvailableIfNeeded(token)
         code += "\(token.accessibility.sourceName)class \(mockClassName(of: token.name)): \(token.name), Cuckoo.Mock {"
         code.nest {
             code += "\(token.accessibility.sourceName)typealias MocksType = \(token.name)"
@@ -64,6 +62,13 @@ public struct Generator {
             generateVerification(for: token)
         }
         code += "}"
+    }
+    
+    private func addAvailableIfNeeded(_ token: ContainerToken){
+    
+        if (token.attributes.contains("source.decl.attribute.available")) {
+            code +=  "@available(iOS 10.0, *)"
+        }
     }
 
     private func minAccessibility(_ val1: Accessibility, _ val2: Accessibility) -> Accessibility {
@@ -132,7 +137,7 @@ public struct Generator {
         
         let accessibility = minAccessibility(token.accessibility, outerAccessibility)
         code += ""
-        addAvaliableIfNeeded(token)
+        addAvailableIfNeeded(token)
         code += "\(accessibility.sourceName)\(override)\(token.isInit ? "" : "func " )\(token.rawName)(\(parametersSignature))\(token.returnSignature) {"
         code.nest("return \(managerCall)")
         code += "}"
@@ -153,7 +158,8 @@ public struct Generator {
     
     private func generateStubbingClass(for token: ContainerToken) {
         guard token.accessibility.isAccessible else { return }
-        
+    
+        addAvailableIfNeeded(token)
         code += "\(token.accessibility.sourceName)struct \(stubbingProxyName(of: token.name)): Cuckoo.StubbingProxy {"
         code.nest {
             code += "private let manager: Cuckoo.MockManager"
@@ -205,7 +211,7 @@ public struct Generator {
         returnType += ">"
         
         code += ""
-        addAvaliableIfNeeded(token)
+        addAvailableIfNeeded(token)
         code += ("\(token.accessibility.sourceName)func \(token.rawName)\(matchableGenerics(with: token.parameters))" +
             "(\(matchableParameterSignature(with: token.parameters))) -> \(returnType)\(matchableGenerics(where: token.parameters)) {")
         let matchers: String
@@ -270,7 +276,7 @@ public struct Generator {
         
         code += ""
         code += "@discardableResult"
-        addAvaliableIfNeeded(token)
+        addAvailableIfNeeded(token)
         code += ("\(token.accessibility.sourceName)func \(token.rawName)\(matchableGenerics(with: token.parameters))" +
             "(\(matchableParameterSignature(with: token.parameters))) -> Cuckoo.__DoNotUse<\(genericSafeType(from: token.returnType))>\(matchableGenerics(where: token.parameters)) {")
         let matchers: String
@@ -288,9 +294,7 @@ public struct Generator {
         guard token.accessibility.isAccessible else { return }
         
         code += ""
-        if (token is ClassDeclaration && (token as! ClassDeclaration).attributes.contains("source.decl.attribute.available")) {
-            code +=  "@available(iOS 10.0, *)"
-        }
+        addAvailableIfNeeded(token)
         code += "\(token.accessibility.sourceName)class \(stubClassName(of: token.name)): \(token.name) {"
         code.nest {
             token.children.forEach { generateNoImplStub(for: $0, withOuterAccessibility: token.accessibility) }
@@ -336,14 +340,14 @@ public struct Generator {
         
         let accessibility = minAccessibility(token.accessibility, outerAccessibility)
         code += ""
-        addAvaliableIfNeeded(token)
+        addAvailableIfNeeded(token)
         code += "\(accessibility.sourceName)\(override)func \(token.rawName)(\(parametersSignature))\(token.returnSignature) {"
         code.nest("return DefaultValueRegistry.defaultValue(for: (\(token.returnType)).self)")
         code += "}"
     }
     
-    private func addAvaliableIfNeeded(_ token: Method){
-        if (token is ClassMethod && (token as! ClassMethod).attributes.contains("source.decl.attribute.available")) {
+    private func addAvailableIfNeeded(_ token: Method){
+        if (token.attributes.contains("source.decl.attribute.available")) {
             code +=  "@available(iOS 10.0, *)"
         }
     }

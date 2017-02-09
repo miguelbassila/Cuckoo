@@ -70,7 +70,8 @@ public struct Tokenizer {
                 nameRange: nameRange!,
                 bodyRange: bodyRange!,
                 initializers: initializers,
-                children: children)
+                children: children,
+                attributes: parsedAttributes)
             
         case Kinds.ClassDeclaration.rawValue:
             let subtokens = tokenize(dictionary[Key.Substructure.rawValue] as? [SourceKitRepresentable] ?? [])
@@ -156,6 +157,7 @@ public struct Tokenizer {
                     returnSignature: returnSignature,
                     range: range!,
                     nameRange: nameRange!,
+                    attributes: parsedAttributes,
                     parameters: parameters)
             }
 
